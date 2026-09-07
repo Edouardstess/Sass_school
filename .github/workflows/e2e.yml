@@ -1,0 +1,90 @@
+name: End-to-end
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (full stack)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: schoolflow
+          POSTGRES_USER: schoolflow
+          POSTGRES_PASSWORD: schoolflow
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 10s
+          --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 10s
+          --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo_pgsql, pgsql, redis, bcmath, intl, zip, gd
+          coverage: none
+          tools: composer:v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Boot the API with a seeded demo tenant
+        working-directory: backend
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: schoolflow
+          DB_USERNAME: schoolflow
+          DB_PASSWORD: schoolflow
+        run: |
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.testing.example .env
+          sed -i 's/^DB_DATABASE=.*/DB_DATABASE=schoolflow/' .env
+          php artisan key:generate
+          PGPASSWORD=schoolflow psql -h 127.0.0.1 -U schoolflow -d schoolflow \
+            -c 'CREATE EXTENSION IF NOT EXISTS pgcrypto; CREATE EXTENSION IF NOT EXISTS citext; CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS unaccent;'
+          php artisan migrate --force --seed
+          php artisan serve --host=127.0.0.1 --port=8000 &
+          npx --yes wait-on http://127.0.0.1:8000/health --timeout 90000
+
+      - name: Build and start the frontend
+        working-directory: frontend
+        env:
+          NEXT_PUBLIC_API_URL: http://127.0.0.1:8000/api/v1
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm run build
+          npm run start &
+          npx --yes wait-on http://127.0.0.1:3000 --timeout 120000
+
+      - name: Run Playwright specs
+        working-directory: frontend
+        env:
+          E2E_BASE_URL: http://127.0.0.1:3000
+          NEXT_PUBLIC_API_URL: http://127.0.0.1:8000/api/v1
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 7
