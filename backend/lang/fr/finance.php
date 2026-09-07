@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'invoice_requires_items' => 'Une facture doit contenir au moins une ligne.',
+    'invoice_not_editable' => "La facture :number n'est plus modifiable car elle a été émise.",
+    'invoice_already_issued' => 'La facture :number a déjà été émise.',
+    'invoice_not_cancellable' => 'Cette facture ne peut plus être annulée.',
+    'invoice_has_payments' => 'Cette facture a reçu des paiements : remboursez-les avant de l\'annuler.',
+    'invoice_not_payable' => 'La facture :number ne peut pas recevoir de paiement (statut : :status).',
+    'invoice_payment_description' => 'Paiement de la facture :number',
+    'payment_must_be_positive' => 'Le montant du paiement doit être supérieur à zéro.',
+    'payment_currency_mismatch' => 'La facture est en :invoice mais le paiement est en :payment.',
+    'payment_exceeds_balance' => 'Le montant dépasse le solde restant (:balance).',
+    'payment_not_confirmable' => 'Ce paiement ne peut pas être confirmé depuis le statut :status.',
+    'method_requires_gateway' => 'Le mode de paiement :method nécessite une passerelle de paiement.',
+    'refund_requires_successful_payment' => 'Seul un paiement confirmé peut être remboursé.',
+    'refund_exceeds_payment' => 'Le remboursement dépasse le montant remboursable (:refundable).',
+    'refund_must_be_positive' => 'Le montant du remboursement doit être supérieur à zéro.',
+    'unknown_gateway' => "La passerelle de paiement :gateway n'existe pas.",
+    'gateway_unavailable' => ':gateway n\'est pas configuré pour cet établissement.',
+    'gateway_currency_unsupported' => ':gateway ne prend pas en charge la devise :currency.',
+    'gateway_request_failed' => 'La communication avec :gateway a échoué. Réessayez dans un instant.',
+    'gateway_bad_response' => ':gateway a renvoyé une réponse inattendue.',
+    'gateway_auth_failed' => "L'authentification auprès de :gateway a échoué.",
+    'webhook_invalid_signature' => 'Signature de webhook invalide.',
+    'webhook_unknown_transaction' => 'Aucune transaction ne correspond à cette notification.',
+];

@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'invoice_requires_items' => 'An invoice must contain at least one line.',
+    'invoice_not_editable' => 'Invoice :number can no longer be edited because it has been issued.',
+    'invoice_already_issued' => 'Invoice :number has already been issued.',
+    'invoice_not_cancellable' => 'This invoice can no longer be cancelled.',
+    'invoice_has_payments' => 'This invoice has received payments: refund them before cancelling it.',
+    'invoice_not_payable' => 'Invoice :number cannot accept a payment (status: :status).',
+    'invoice_payment_description' => 'Payment for invoice :number',
+    'payment_must_be_positive' => 'The payment amount must be greater than zero.',
+    'payment_currency_mismatch' => 'The invoice is in :invoice but the payment is in :payment.',
+    'payment_exceeds_balance' => 'The amount exceeds the outstanding balance (:balance).',
+    'payment_not_confirmable' => 'This payment cannot be confirmed from status :status.',
+    'method_requires_gateway' => 'Payment method :method requires a payment gateway.',
+    'refund_requires_successful_payment' => 'Only a confirmed payment can be refunded.',
+    'refund_exceeds_payment' => 'The refund exceeds the refundable amount (:refundable).',
+    'refund_must_be_positive' => 'The refund amount must be greater than zero.',
+    'unknown_gateway' => 'Payment gateway :gateway does not exist.',
+    'gateway_unavailable' => ':gateway is not configured for this school.',
+    'gateway_currency_unsupported' => ':gateway does not support the :currency currency.',
+    'gateway_request_failed' => 'Communication with :gateway failed. Please try again shortly.',
+    'gateway_bad_response' => ':gateway returned an unexpected response.',
+    'gateway_auth_failed' => 'Authentication with :gateway failed.',
+    'webhook_invalid_signature' => 'Invalid webhook signature.',
+    'webhook_unknown_transaction' => 'No transaction matches this notification.',
+];
