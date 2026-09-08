@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $last_name
  * @property string|null $email
  * @property string|null $phone
+ * @property User|null $user
  */
 class Guardian extends BaseModel
 {

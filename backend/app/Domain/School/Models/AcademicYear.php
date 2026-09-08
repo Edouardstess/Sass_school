@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $status
  * @property CarbonImmutable $starts_on
  * @property CarbonImmutable $ends_on
+ * @property numeric-string $grading_scale_max
+ * @property numeric-string $passing_grade
  */
 class AcademicYear extends BaseModel
 {

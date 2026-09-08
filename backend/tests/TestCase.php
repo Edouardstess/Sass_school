@@ -65,7 +65,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     /** A tenant with an active academic year, ready to receive data. */
-    protected function makeSchool(array $attributes = []): School
+    public function makeSchool(array $attributes = []): School
     {
         $school = School::factory()->create($attributes);
 
@@ -83,7 +83,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     /** A user in the given school holding one of the seeded system roles. */
-    protected function makeUser(School $school, string $role = Role::SCHOOL_ADMIN, array $attributes = []): User
+    public function makeUser(School $school, string $role = Role::SCHOOL_ADMIN, array $attributes = []): User
     {
         $user = User::factory()->create(['school_id' => $school->id, ...$attributes]);
 
@@ -94,7 +94,7 @@ abstract class TestCase extends BaseTestCase
         return $user->fresh(['roles', 'school']);
     }
 
-    protected function makePlatformAdmin(): User
+    public function makePlatformAdmin(): User
     {
         $user = User::factory()->create(['school_id' => null]);
 
@@ -112,7 +112,7 @@ abstract class TestCase extends BaseTestCase
      * AuthenticationService issues them, so ability checks are exercised
      * rather than bypassed.
      */
-    protected function actingAsUser(User $user): static
+    public function actingAsUser(User $user): static
     {
         Sanctum::actingAs($user, $user->permissionNames());
 
@@ -120,12 +120,12 @@ abstract class TestCase extends BaseTestCase
     }
 
     /** Run a closure with a given school as the active tenant. */
-    protected function withinTenant(School $school, callable $callback): mixed
+    public function withinTenant(School $school, callable $callback): mixed
     {
         return app(TenantContext::class)->runFor($school, fn () => $callback());
     }
 
-    protected function seedPlans(): void
+    public function seedPlans(): void
     {
         $this->seed(PlanSeeder::class);
     }

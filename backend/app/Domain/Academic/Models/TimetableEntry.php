@@ -17,6 +17,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * `day_of_week` follows ISO-8601 (1 = Monday), matching Carbon's `dayOfWeekIso`
  * so no translation is needed when matching an attendance date to a slot.
  */
+/**
+ * @property string $id
+ * @property string $school_class_id
+ * @property string|null $teacher_id
+ * @property string|null $room_id
+ * @property string $starts_at
+ * @property string $ends_at
+ * @property SchoolClass|null $schoolClass
+ * @property Subject|null $subject
+ * @property Teacher|null $teacher
+ * @property Room|null $room
+ */
 class TimetableEntry extends BaseModel
 {
     use BelongsToTenant, HasFactory;

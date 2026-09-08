@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $is_locked
  * @property CarbonImmutable $starts_on
  * @property CarbonImmutable $ends_on
+ * @property AcademicYear|null $academicYear
  */
 class GradePeriod extends BaseModel
 {

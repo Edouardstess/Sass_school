@@ -9,6 +9,7 @@ use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -24,7 +25,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $id
  * @property string $student_id
  * @property string $status
+ * @property int|null $rank
+ * @property int|null $class_size
  * @property Student|null $student
+ * @property GradePeriod|null $gradePeriod
+ * @property SchoolClass|null $schoolClass
+ * @property Collection<int, ReportCardLine> $lines
  */
 class ReportCard extends BaseModel
 {

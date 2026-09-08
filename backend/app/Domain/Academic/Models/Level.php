@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /** A grade level ("6ème", "NS1"). `sequence` orders them for promotion. */
+/**
+ * @property string $id
+ * @property string $name
+ */
 class Level extends BaseModel
 {
     use BelongsToTenant, HasFactory, SoftDeletes;

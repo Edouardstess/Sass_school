@@ -7,6 +7,7 @@ namespace App\Domain\Attendance\Models;
 use App\Domain\Academic\Models\SchoolClass;
 use App\Domain\Academic\Models\TimetableEntry;
 use App\Domain\Identity\Models\User;
+use App\Domain\School\Models\School;
 use App\Domain\Shared\Enums\AttendanceStatus;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
@@ -30,6 +31,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $is_justified
  * @property CarbonImmutable $attendance_date
  * @property Student|null $student
+ * @property School|null $school
+ * @property SchoolClass|null $schoolClass
+ * @property CarbonImmutable|null $parent_notified_at
  */
 class AttendanceRecord extends BaseModel
 {

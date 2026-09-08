@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property numeric-string $default_coefficient
+ */
 class Subject extends BaseModel
 {
     use BelongsToTenant, HasFactory, SoftDeletes;

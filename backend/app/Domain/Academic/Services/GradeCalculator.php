@@ -119,7 +119,7 @@ final class GradeCalculator
      * Loads the whole period's grades in a single query; computing this
      * per-subject would be N+1 across a 700-student report card run.
      *
-     * @return array<string, array{average: float|null, coefficient: float, subject_name: string, class_subject_id: string}>
+     * @return array<string, array{average: float|null, coefficient: float, subject_name: string, class_subject_id: string, teacher_name: string|null}>
      */
     public function subjectAveragesForStudent(
         string $studentId,

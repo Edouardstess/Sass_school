@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string|null $section
  * @property int|null $capacity
+ * @property string $academic_year_id
+ * @property AcademicYear|null $academicYear
  * @property Level|null $level
  * @property Room|null $room
  * @property Teacher|null $homeroomTeacher
