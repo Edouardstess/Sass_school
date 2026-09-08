@@ -19,6 +19,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Many-to-many with students in both directions: a guardian may have several
  * children at the school, and a child may have several responsible adults.
  */
+/**
+ * @property string $id
+ * @property string|null $user_id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $email
+ * @property string|null $phone
+ */
 class Guardian extends BaseModel
 {
     use BelongsToTenant, Filterable, HasFactory, SoftDeletes;

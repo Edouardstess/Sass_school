@@ -19,6 +19,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * declares; the calculator normalises before combining, so a quiz out of 20
  * and an exam out of 100 mix correctly.
  */
+/**
+ * @property string $id
+ * @property string $class_subject_id
+ * @property string $grade_period_id
+ * @property string $status
+ * @property AssessmentType $type
+ * @property numeric-string $max_score
+ * @property numeric-string $weight
+ * @property GradePeriod|null $gradePeriod
+ * @property ClassSubject|null $classSubject
+ */
 class Assessment extends BaseModel
 {
     use BelongsToTenant, HasFactory, SoftDeletes;

@@ -23,7 +23,7 @@ final class RankingService
 {
     /**
      * @param  array<string, float|null>  $averages  student id => average
-     * @return array<string, int|null>  student id => rank (null when unmarked)
+     * @return array<string, int|null> student id => rank (null when unmarked)
      */
     public function rank(array $averages): array
     {

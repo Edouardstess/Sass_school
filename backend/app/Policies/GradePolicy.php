@@ -98,7 +98,7 @@ class GradePolicy
             return true;
         }
 
-        $teacher = $user->relationLoaded('teacher') ? $user->teacher : $user->teacher()->first();
+        $teacher = $user->loadMissing('teacher')->teacher;
 
         if ($teacher === null) {
             // Not a teacher and not an administrator: no path to writing marks.

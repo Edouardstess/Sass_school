@@ -7,6 +7,7 @@ namespace App\Domain\Academic\Models;
 use App\Domain\School\Models\AcademicYear;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,6 +15,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * A term / trimester. Grades belong to one, and a locked period stops
  * accepting new or amended marks.
+ */
+/**
+ * @property string $id
+ * @property string $academic_year_id
+ * @property string $name
+ * @property bool $is_locked
+ * @property CarbonImmutable $starts_on
+ * @property CarbonImmutable $ends_on
  */
 class GradePeriod extends BaseModel
 {

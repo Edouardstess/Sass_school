@@ -16,6 +16,7 @@ use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,11 +29,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * a database CHECK constraint (`balance = total - paid`), so the row can never
  * drift into an arithmetically impossible state — not through a race, not
  * through a partially applied update.
- *
+ */
+/**
+ * @property string $id
+ * @property string $school_id
+ * @property string $student_id
+ * @property string $number
+ * @property string $currency
  * @property InvoiceStatus $status
+ * @property int $subtotal_minor
+ * @property int $discount_minor
  * @property int $total_minor
  * @property int $paid_minor
  * @property int $balance_minor
+ * @property CarbonImmutable|null $issued_on
+ * @property CarbonImmutable|null $due_on
+ * @property CarbonImmutable|null $paid_at
+ * @property Collection<int, InvoiceItem> $items
+ * @property Student|null $student
  */
 class Invoice extends BaseModel
 {
@@ -170,6 +184,6 @@ class Invoice extends BaseModel
 
     public function scopeOverdue(Builder $query): Builder
     {
-        return $query->outstanding()->whereDate('due_on', '<', now()->toDateString());
+        return $this->scopeOutstanding($query)->whereDate('due_on', '<', now()->toDateString());
     }
 }

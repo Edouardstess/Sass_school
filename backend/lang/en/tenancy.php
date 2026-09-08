@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'missing_school' => 'This account is not attached to any school.',
     'school_suspended' => 'This school is suspended.',

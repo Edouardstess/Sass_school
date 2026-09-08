@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Notification\Models;
 
+use App\Domain\School\Models\School;
 use App\Domain\Shared\Enums\NotificationChannel;
 use App\Domain\Shared\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,7 +34,7 @@ class NotificationTemplate extends BaseModel
 
     public function school(): BelongsTo
     {
-        return $this->belongsTo(\App\Domain\School\Models\School::class);
+        return $this->belongsTo(School::class);
     }
 
     /**

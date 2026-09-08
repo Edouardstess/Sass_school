@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'invoice_requires_items' => 'An invoice must contain at least one line.',
     'invoice_not_editable' => 'Invoice :number can no longer be edited because it has been issued.',

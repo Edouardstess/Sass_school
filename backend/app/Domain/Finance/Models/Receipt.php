@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Finance\Models;
 
 use App\Domain\Document\Models\Document;
+use App\Domain\School\Models\School;
 use App\Domain\Shared\Concerns\HasMoneyColumns;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
@@ -17,6 +18,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * `payment_id` is uniquely indexed: that constraint is precisely what makes
  * the issuing job safe to re-run after a crash or a duplicated webhook.
+ */
+/**
+ * @property string $number
+ * @property string|null $document_id
+ * @property School|null $school
+ * @property Payment|null $payment
+ * @property Invoice|null $invoice
+ * @property Student|null $student
  */
 class Receipt extends BaseModel
 {

@@ -27,7 +27,9 @@ class CertificatePolicy
             return true;
         }
 
-        return app(StudentPolicy::class)->isRelated($user, $certificate->student);
+        $student = $certificate->student;
+
+        return $student !== null && app(StudentPolicy::class)->isRelated($user, $student);
     }
 
     public function issue(User $user): bool

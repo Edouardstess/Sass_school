@@ -59,7 +59,7 @@ class AssessmentPolicy
             return true;
         }
 
-        $teacher = $user->relationLoaded('teacher') ? $user->teacher : $user->teacher()->first();
+        $teacher = $user->loadMissing('teacher')->teacher;
 
         return $teacher !== null && $teacher->teaches($assessment->class_subject_id);
     }

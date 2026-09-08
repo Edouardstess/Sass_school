@@ -19,6 +19,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * the calculator excludes it from the weighted average rather than dragging
  * the student down for an illness.
  */
+/**
+ * @property string $id
+ * @property string $school_id
+ * @property string $assessment_id
+ * @property string $student_id
+ * @property numeric-string|null $score
+ * @property bool $is_absent
+ * @property Assessment|null $assessment
+ * @property Student|null $student
+ */
 class Grade extends BaseModel
 {
     use BelongsToTenant, HasFactory;

@@ -7,6 +7,7 @@ namespace App\Domain\Finance\Services;
 use App\Domain\Finance\Models\Payment;
 use App\Domain\Finance\Models\Receipt;
 use App\Domain\Shared\Services\NumberGenerator;
+use App\Jobs\GenerateReceiptPdf;
 use Illuminate\Database\UniqueConstraintViolationException;
 
 /**
@@ -50,7 +51,7 @@ final class ReceiptService
         }
 
         // Rendering happens out of band on the documents queue.
-        \App\Jobs\GenerateReceiptPdf::dispatch($receipt->id, $receipt->school_id)
+        GenerateReceiptPdf::dispatch($receipt->id, $receipt->school_id)
             ->onQueue('documents');
 
         return $receipt;

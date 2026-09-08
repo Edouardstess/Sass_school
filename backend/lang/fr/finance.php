@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'invoice_requires_items' => 'Une facture doit contenir au moins une ligne.',
     'invoice_not_editable' => "La facture :number n'est plus modifiable car elle a été émise.",

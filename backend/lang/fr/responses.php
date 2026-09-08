@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'created' => 'Créé avec succès.',
     'updated' => 'Mis à jour avec succès.',

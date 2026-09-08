@@ -34,7 +34,7 @@ final class ResolveTenant
         }
 
         if (! $user->isPlatformAdmin()) {
-            $school = $user->relationLoaded('school') ? $user->school : $user->school()->first();
+            $school = $user->loadMissing('school')->school;
 
             if ($school === null) {
                 return response()->json([

@@ -10,6 +10,9 @@ use RuntimeException;
  * A business rule was violated — not a bug, and not a validation error on a
  * single field. The HTTP layer renders these as 409 Conflict with the domain
  * message intact, so the user is told what actually went wrong.
+ *
+ * @phpstan-consistent-constructor  subclasses keep this signature, which is
+ *                                 what makes `new static()` in make() safe
  */
 class DomainException extends RuntimeException
 {

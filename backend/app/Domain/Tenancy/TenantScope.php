@@ -27,9 +27,13 @@ final class TenantScope implements Scope
             return;
         }
 
-        $builder->where(
-            $model->qualifyColumn($model->getTenantColumn()),
-            $context->id()
-        );
+        // Registered only from BelongsToTenant::boot, so the model always
+        // carries that trait — something PHPStan cannot see through Eloquent's
+        // generic Scope interface, hence the explicit method check.
+        $column = method_exists($model, 'getTenantColumn')
+            ? $model->getTenantColumn()
+            : 'school_id';
+
+        $builder->where($model->qualifyColumn($column), $context->id());
     }
 }

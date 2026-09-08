@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 /**
  * A stored file.
@@ -74,17 +75,14 @@ class Document extends BaseModel
     public function temporaryUrl(?int $minutes = null): string
     {
         $minutes ??= (int) config('schoolflow.security.signed_url_ttl_minutes', 10);
-        $disk = Storage::disk($this->disk);
-
-        // The local driver has no signed-URL support; in development it falls
-        // back to a route-signed URL so behaviour stays comparable.
-        if (! method_exists($disk, 'temporaryUrl')) {
-            return route('documents.download', ['document' => $this->id]);
-        }
 
         try {
-            return $disk->temporaryUrl($this->path, now()->addMinutes($minutes));
-        } catch (\RuntimeException) {
+            return Storage::disk($this->disk)->temporaryUrl($this->path, now()->addMinutes($minutes));
+        } catch (RuntimeException) {
+            // The local driver has no signed-URL support and throws rather
+            // than returning null. In development we fall back to a
+            // route-signed URL so the download path behaves comparably to S3
+            // without pretending to be it.
             return route('documents.download', ['document' => $this->id]);
         }
     }

@@ -17,6 +17,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property string $id
+ * @property string|null $user_id
+ * @property string $status
+ */
 class Teacher extends BaseModel
 {
     use BelongsToTenant, Filterable, HasFactory, SoftDeletes;

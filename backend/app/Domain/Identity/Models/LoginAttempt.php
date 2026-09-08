@@ -14,6 +14,18 @@ use App\Domain\Shared\Models\BaseModel;
  */
 class LoginAttempt extends BaseModel
 {
+    public const REASON_INVALID_CREDENTIALS = 'invalid_credentials';
+
+    public const REASON_ACCOUNT_DISABLED = 'account_disabled';
+
+    public const REASON_SCHOOL_SUSPENDED = 'school_suspended';
+
+    public const REASON_TWO_FACTOR_REQUIRED = 'two_factor_required';
+
+    public const REASON_TWO_FACTOR_FAILED = 'two_factor_failed';
+
+    public const REASON_THROTTLED = 'throttled';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -28,16 +40,4 @@ class LoginAttempt extends BaseModel
             'created_at' => 'immutable_datetime',
         ];
     }
-
-    public const REASON_INVALID_CREDENTIALS = 'invalid_credentials';
-
-    public const REASON_ACCOUNT_DISABLED = 'account_disabled';
-
-    public const REASON_SCHOOL_SUSPENDED = 'school_suspended';
-
-    public const REASON_TWO_FACTOR_REQUIRED = 'two_factor_required';
-
-    public const REASON_TWO_FACTOR_FAILED = 'two_factor_failed';
-
-    public const REASON_THROTTLED = 'throttled';
 }

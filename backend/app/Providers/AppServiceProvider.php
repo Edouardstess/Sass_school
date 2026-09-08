@@ -9,11 +9,13 @@ use App\Domain\Academic\Models\Grade;
 use App\Domain\Academic\Models\ReportCard;
 use App\Domain\Academic\Models\SchoolClass;
 use App\Domain\Attendance\Models\AttendanceRecord;
+use App\Domain\Document\Models\Certificate;
 use App\Domain\Document\Models\Document;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\Payment;
 use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\School;
+use App\Domain\Student\Models\AdmissionApplication;
 use App\Domain\Student\Models\Student;
 use App\Domain\Teacher\Models\Teacher;
 use App\Domain\Tenancy\TenantContext;
@@ -75,8 +77,8 @@ class AppServiceProvider extends ServiceProvider
             'report_card' => ReportCard::class,
             'attendance_record' => AttendanceRecord::class,
             'document' => Document::class,
-            'admission_application' => \App\Domain\Student\Models\AdmissionApplication::class,
-            'certificate' => \App\Domain\Document\Models\Certificate::class,
+            'admission_application' => AdmissionApplication::class,
+            'certificate' => Certificate::class,
         ]);
     }
 

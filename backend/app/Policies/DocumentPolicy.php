@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Domain\Academic\Models\ReportCard;
 use App\Domain\Document\Models\Document;
+use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\Receipt;
 use App\Domain\Identity\Models\User;
+use App\Domain\Student\Models\Student;
 use App\Policies\Concerns\ChecksTenant;
 
 /**
@@ -69,10 +73,10 @@ class DocumentPolicy
         }
 
         return match (true) {
-            $subject instanceof \App\Domain\Student\Models\Student => $user->can('view', $subject),
-            $subject instanceof \App\Domain\Academic\Models\ReportCard => $user->can('view', $subject),
-            $subject instanceof \App\Domain\Finance\Models\Invoice => $user->can('view', $subject),
-            $subject instanceof \App\Domain\Finance\Models\Receipt => $user->can('view', $subject->invoice),
+            $subject instanceof Student => $user->can('view', $subject),
+            $subject instanceof ReportCard => $user->can('view', $subject),
+            $subject instanceof Invoice => $user->can('view', $subject),
+            $subject instanceof Receipt => $user->can('view', $subject->invoice),
             default => true,
         };
     }

@@ -6,6 +6,7 @@ namespace App\Domain\Student\Models;
 
 use App\Domain\Academic\Models\Level;
 use App\Domain\Academic\Models\SchoolClass;
+use App\Domain\Document\Models\Document;
 use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\AcademicYear;
 use App\Domain\Shared\Enums\ApplicationStatus;
@@ -22,6 +23,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * `student_id` is set when the application is converted, which is what makes
  * conversion idempotent: a second attempt finds the link and refuses.
+ */
+/**
+ * @property string $id
+ * @property string $reference
+ * @property ApplicationStatus $status
+ * @property string|null $student_id
  */
 class AdmissionApplication extends BaseModel
 {
@@ -85,7 +92,7 @@ class AdmissionApplication extends BaseModel
     /** Supporting files (birth certificate, previous transcripts…). */
     public function documents(): MorphMany
     {
-        return $this->morphMany(\App\Domain\Document\Models\Document::class, 'documentable');
+        return $this->morphMany(Document::class, 'documentable');
     }
 
     public function isConverted(): bool

@@ -17,6 +17,7 @@ use App\Domain\Shared\Services\NumberGenerator;
 use App\Domain\Shared\ValueObjects\Money;
 use App\Domain\Student\Models\Student;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -56,19 +57,17 @@ final class InvoiceService
             throw new DomainException(__('finance.invoice_requires_items'));
         }
 
-        $currency ??= $student->school?->currency ?? config('schoolflow.currency.default');
+        $currency ??= $student->school->currency ?? config('schoolflow.currency.default');
 
         return DB::transaction(function () use (
-            $student, $academicYearId, $items, $dueOn, $currency, $notes, $generationKey, $createdBy
+            $student, $academicYearId, $items, $currency, $notes, $generationKey, $createdBy
         ): Invoice {
             $invoice = new Invoice;
             $invoice->forceFill([
                 'school_id' => $student->school_id,
                 'student_id' => $student->id,
                 'academic_year_id' => $academicYearId,
-                'guardian_id' => $student->relationLoaded('guardians')
-                    ? $student->financialGuardian()?->id
-                    : $student->guardians()->first()?->id,
+                'guardian_id' => $student->loadMissing('guardians')->financialGuardian()?->id,
                 'created_by' => $createdBy,
                 'number' => $this->numbers->next('invoice', null, $student->school_id),
                 'currency' => $currency,
@@ -270,6 +269,7 @@ final class InvoiceService
      */
     public function recalculate(Invoice $invoice): Invoice
     {
+        /** @var Collection<int, InvoiceItem> $items */
         $items = $invoice->items()->get();
 
         $subtotal = $items->reduce(

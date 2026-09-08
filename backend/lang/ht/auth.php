@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'failed' => 'Enfòmasyon sa yo pa koresponn ak okenn kont.',
     'password' => 'Modpas la pa kòrèk.',

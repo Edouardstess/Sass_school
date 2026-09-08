@@ -11,6 +11,7 @@ use App\Domain\Shared\Enums\AttendanceStatus;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * `timetable_entry_id` is null for daily roll-call and set for per-period
  * attendance; two partial unique indexes keep both shapes free of duplicates.
+ */
+/**
+ * @property string $id
+ * @property string $student_id
+ * @property AttendanceStatus $status
+ * @property bool $is_justified
+ * @property CarbonImmutable $attendance_date
+ * @property Student|null $student
  */
 class AttendanceRecord extends BaseModel
 {

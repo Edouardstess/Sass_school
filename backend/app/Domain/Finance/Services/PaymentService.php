@@ -10,7 +10,6 @@ use App\Domain\Finance\Models\Payment;
 use App\Domain\Finance\Models\PaymentTransaction;
 use App\Domain\Finance\Models\Receipt;
 use App\Domain\Finance\Models\Refund;
-use App\Domain\Finance\ValueObjects\GatewayCharge;
 use App\Domain\Shared\Enums\AuditAction;
 use App\Domain\Shared\Enums\PaymentMethod;
 use App\Domain\Shared\Enums\PaymentStatus;

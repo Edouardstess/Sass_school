@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'generated_on' => 'Document généré le :date',
+    'receipt' => 'Reçu de paiement',
+    'receipt_title' => 'Reçu :number',
+    'payer' => 'Informations',
+    'student' => 'Élève',
+    'paid_by' => 'Payé par',
+    'payment_date' => 'Date du paiement',
+    'payment_method' => 'Mode de paiement',
+    'reference' => 'Référence',
+    'applied_to_invoice' => 'Facture :number',
+    'description' => 'Désignation',
+    'quantity' => 'Qté',
+    'unit_price' => 'Prix unitaire',
+    'total' => 'Total',
+    'invoice_total' => 'Total de la facture',
+    'amount_received' => 'Montant reçu',
+    'invoice_balance' => 'Solde restant',
+    'settled' => 'Soldée',
+    'outstanding' => 'Solde dû',
+    'for_the_school' => "Pour l'établissement",
+    'stamp' => 'Cachet et signature',
+
+    // Report card
+    'report_card' => 'Bulletin scolaire',
+    'report_card_title' => 'Bulletin — :student',
+    'class' => 'Classe',
+    'period' => 'Période',
+    'academic_year' => 'Année scolaire',
+    'subject' => 'Matière',
+    'coefficient' => 'Coef.',
+    'average' => 'Moyenne',
+    'class_average' => 'Moy. classe',
+    'min' => 'Min',
+    'max' => 'Max',
+    'rank' => 'Rang',
+    'appreciation' => 'Appréciation',
+    'teacher' => 'Enseignant',
+    'general_average' => 'Moyenne générale',
+    'general_rank' => 'Rang',
+    'out_of' => 'sur :count',
+    'attendance_summary' => 'Assiduité',
+    'absences' => 'Absences',
+    'lates' => 'Retards',
+    'remarks' => 'Observations',
+    'principal' => 'Le Directeur',
+
+    // Certificates
+    'certificate' => 'Certificat',
+    'certificate_number' => 'N° :number',
+    'verification_notice' => 'Authenticité vérifiable sur :url avec le code :code',
+    'issued_on' => 'Délivré le :date',
+];

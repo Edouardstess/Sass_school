@@ -7,6 +7,7 @@ namespace App\Domain\Shared\ValueObjects;
 use App\Domain\Shared\Exceptions\CurrencyMismatchException;
 use InvalidArgumentException;
 use JsonSerializable;
+use NumberFormatter;
 use Stringable;
 
 /**
@@ -271,7 +272,7 @@ final readonly class Money implements JsonSerializable, Stringable
 
     public function format(?string $locale = null): string
     {
-        $formatter = new \NumberFormatter($locale ?? 'fr_FR', \NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter($locale ?? 'fr_FR', NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency((float) $this->toDecimalString(), $this->currency)
             ?: $this->toDecimalString().' '.$this->currency;

@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\DB;
  */
 final class PermissionRegistry
 {
+    private const CACHE_TTL_SECONDS = 900;
+
     /**
      * Per-request memoisation, on top of the shared cache. A single request
      * asks "can this user…" many times across policies and resources.
@@ -30,8 +32,6 @@ final class PermissionRegistry
      * @var array<string, list<string>>
      */
     private array $memo = [];
-
-    private const CACHE_TTL_SECONDS = 900;
 
     /** @return list<string> */
     public function forUser(User $user): array
@@ -99,9 +99,10 @@ final class PermissionRegistry
             $revoked,
         );
 
+        // sort() reindexes in place, so the result is already a list.
         sort($effective);
 
-        return array_values($effective);
+        return $effective;
     }
 
     private function cacheKey(User $user): string
@@ -143,7 +144,7 @@ final class PermissionRegistry
             }
         }
 
-        return array_values(array_unique($expanded));
+        return array_unique($expanded);
     }
 
     /** Every permission name the product defines, from the config catalogue. */

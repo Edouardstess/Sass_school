@@ -19,6 +19,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * (class, subject) pair they are actually assigned to, no matter what
  * permissions their role carries.
  */
+/**
+ * @property string $id
+ * @property string $school_class_id
+ * @property string $subject_id
+ * @property string|null $teacher_id
+ * @property numeric-string $coefficient
+ * @property Subject|null $subject
+ * @property Teacher|null $teacher
+ */
 class ClassSubject extends BaseModel
 {
     use BelongsToTenant, HasFactory;

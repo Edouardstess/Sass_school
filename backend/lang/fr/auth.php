@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'failed' => 'Ces identifiants ne correspondent à aucun compte.',
     'password' => 'Le mot de passe est incorrect.',
@@ -14,6 +16,6 @@ return [
     'two_factor_not_started' => "L'authentification à deux facteurs n'a pas été initialisée.",
     'current_password_invalid' => 'Le mot de passe actuel est incorrect.',
     'password_must_differ' => "Le nouveau mot de passe doit être différent de l'ancien.",
-    'unknown_school' => "Aucun établissement ne correspond à cet identifiant.",
+    'unknown_school' => 'Aucun établissement ne correspond à cet identifiant.',
     'email_not_verified' => "Votre adresse e-mail n'a pas été vérifiée.",
 ];

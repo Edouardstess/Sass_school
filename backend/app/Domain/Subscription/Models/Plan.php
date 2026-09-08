@@ -8,9 +8,18 @@ use App\Domain\Shared\Concerns\HasMoneyColumns;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /** A commercial tier. Limits live in `features`, never in code. */
+/**
+ * @property string $id
+ * @property string $code
+ * @property string $currency
+ * @property int $price_monthly_minor
+ * @property int $price_yearly_minor
+ * @property Collection<int, PlanFeature> $features
+ */
 class Plan extends BaseModel
 {
     use HasMoneyColumns;

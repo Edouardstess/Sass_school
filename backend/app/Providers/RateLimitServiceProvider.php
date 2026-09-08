@@ -53,10 +53,10 @@ class RateLimitServiceProvider extends ServiceProvider
 
         // The AI assistant costs money per call; bill it to the user.
         RateLimiter::for('assistant', fn (Request $request): Limit => Limit::perMinute(10)
-            ->by('ai:'.($request->user()?->id ?? $request->ip())));
+            ->by('ai:'.($request->user()->id ?? $request->ip())));
 
         // Exports and imports are heavy; a handful per hour is plenty.
         RateLimiter::for('heavy', fn (Request $request): Limit => Limit::perHour(30)
-            ->by('heavy:'.($request->user()?->id ?? $request->ip())));
+            ->by('heavy:'.($request->user()->id ?? $request->ip())));
     }
 }

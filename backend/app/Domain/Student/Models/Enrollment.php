@@ -9,11 +9,22 @@ use App\Domain\School\Models\AcademicYear;
 use App\Domain\Shared\Enums\EnrollmentStatus;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /** A student's placement in one class for one academic year. */
+/**
+ * @property string $id
+ * @property string $student_id
+ * @property string $school_class_id
+ * @property string $academic_year_id
+ * @property EnrollmentStatus $status
+ * @property CarbonImmutable|null $enrolled_on
+ * @property SchoolClass|null $schoolClass
+ * @property AcademicYear|null $academicYear
+ */
 class Enrollment extends BaseModel
 {
     use BelongsToTenant, HasFactory;

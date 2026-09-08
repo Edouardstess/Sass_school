@@ -9,6 +9,7 @@ use App\Domain\School\Models\AcademicYear;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,6 +18,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * `verification_code` is random rather than sequential, so possessing one code
  * tells you nothing about any other, and the public verification route reveals
  * only an attestation — never the student's full record.
+ */
+/**
+ * @property Student|null $student
+ * @property CarbonImmutable|null $issued_at
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $revoked_at
  */
 class Certificate extends BaseModel
 {

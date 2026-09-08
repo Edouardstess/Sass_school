@@ -8,6 +8,7 @@ use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Subscription\Models\Subscription;
+use Carbon\CarbonImmutable;
 use Database\Factories\SchoolFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,12 +26,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string $status
  */
+/**
+ * @property CarbonImmutable|null $deleted_at
+ */
 class School extends BaseModel
 {
     /** @use HasFactory<SchoolFactory> */
     use HasFactory;
 
     use SoftDeletes;
+
+    public const STATUS_TRIAL = 'trial';
+
+    public const STATUS_ACTIVE = 'active';
+
+    public const STATUS_SUSPENDED = 'suspended';
+
+    public const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [
         'slug', 'name', 'legal_name', 'email', 'phone', 'website',
@@ -44,14 +56,6 @@ class School extends BaseModel
             'suspended_at' => 'datetime',
         ];
     }
-
-    public const STATUS_TRIAL = 'trial';
-
-    public const STATUS_ACTIVE = 'active';
-
-    public const STATUS_SUSPENDED = 'suspended';
-
-    public const STATUS_CANCELLED = 'cancelled';
 
     // ------------------------------------------------------------------ state
 

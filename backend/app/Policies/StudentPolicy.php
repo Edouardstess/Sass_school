@@ -80,7 +80,7 @@ class StudentPolicy
             return true;
         }
 
-        $guardian = $user->relationLoaded('guardian') ? $user->guardian : $user->guardian()->first();
+        $guardian = $user->loadMissing('guardian')->guardian;
 
         if ($guardian === null) {
             return false;

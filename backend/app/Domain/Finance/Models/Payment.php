@@ -13,6 +13,7 @@ use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Only a payment in `succeeded` moves the invoice balance. Gateway payments
  * reach that state exclusively through a verified webhook — never because a
  * browser was redirected to a success URL.
+ */
+/**
+ * @property string $id
+ * @property string $school_id
+ * @property string $invoice_id
+ * @property string $student_id
+ * @property string $reference
+ * @property int $amount_minor
+ * @property string $currency
+ * @property PaymentMethod $method
+ * @property PaymentStatus $status
+ * @property CarbonImmutable|null $paid_at
+ * @property Invoice|null $invoice
+ * @property Student|null $student
  */
 class Payment extends BaseModel
 {

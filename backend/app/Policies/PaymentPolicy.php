@@ -27,8 +27,11 @@ class PaymentPolicy
             return true;
         }
 
-        return $user->hasPermission('invoices.view_own')
-            && app(StudentPolicy::class)->isRelated($user, $payment->student);
+        $student = $payment->student;
+
+        return $student !== null
+            && $user->hasPermission('invoices.view_own')
+            && app(StudentPolicy::class)->isRelated($user, $student);
     }
 
     /** Recording a manual payment is a staff action, not a parent one. */

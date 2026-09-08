@@ -13,6 +13,14 @@ use App\Domain\Tenancy\Concerns\BelongsToTenant;
  * Values are stored as JSONB and cast back through `typed()` so the API can
  * return a real boolean/integer rather than the string "1".
  */
+/**
+ * @property string $id
+ * @property string $school_id
+ * @property string $group
+ * @property string $key
+ * @property array<string, mixed>|scalar|null $value
+ * @property string $type
+ */
 class SchoolSetting extends BaseModel
 {
     use BelongsToTenant;

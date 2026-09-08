@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'missing_school' => 'Kont sa a pa atache ak okenn lekòl.',
     'school_suspended' => 'Lekòl sa a sispann.',

@@ -8,6 +8,7 @@ use App\Domain\School\Models\School;
 use App\Domain\Shared\Enums\SubscriptionStatus;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +19,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * `feature_overrides` is how an Enterprise tenant gets a bespoke ceiling
  * without a new plan row — the enforcer reads the override first and the plan
  * feature second.
+ */
+/**
+ * @property string $id
+ * @property string $school_id
+ * @property string $plan_id
+ * @property SubscriptionStatus $status
+ * @property string $billing_cycle
+ * @property array<string, mixed>|null $feature_overrides
+ * @property CarbonImmutable|null $trial_ends_at
+ * @property CarbonImmutable|null $current_period_end
+ * @property Plan|null $plan
  */
 class Subscription extends BaseModel
 {
@@ -74,7 +86,7 @@ class Subscription extends BaseModel
     public function monthlyRecurringRevenue(): Money
     {
         if (! $this->status->isBillable() || $this->plan === null) {
-            return Money::zero($this->plan?->currency ?? 'USD');
+            return Money::zero($this->plan->currency ?? 'USD');
         }
 
         return $this->plan->monthlyRecurringRevenue($this->billing_cycle);

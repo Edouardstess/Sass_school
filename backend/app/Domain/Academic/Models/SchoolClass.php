@@ -24,6 +24,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Note the table is `school_classes`: `class` is reserved in PHP and `classes`
  * would collide with framework conventions in unpleasant ways.
  */
+/**
+ * @property string $id
+ * @property string $name
+ * @property string|null $section
+ * @property int|null $capacity
+ * @property Level|null $level
+ * @property Room|null $room
+ * @property Teacher|null $homeroomTeacher
+ */
 class SchoolClass extends BaseModel
 {
     use BelongsToTenant, Filterable, HasFactory, SoftDeletes;

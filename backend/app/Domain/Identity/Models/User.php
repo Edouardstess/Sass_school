@@ -9,8 +9,10 @@ use App\Domain\School\Models\School;
 use App\Domain\Student\Models\Guardian;
 use App\Domain\Student\Models\Student;
 use App\Domain\Teacher\Models\Teacher;
+use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,6 +36,18 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $status
  * @property int $permissions_version
+ */
+/**
+ * @property array<int, string>|null $two_factor_recovery_codes
+ * @property string|null $two_factor_secret
+ * @property CarbonImmutable|null $last_login_at
+ * @property CarbonImmutable|null $email_verified_at
+ * @property CarbonImmutable|null $created_at
+ * @property School|null $school
+ * @property Teacher|null $teacher
+ * @property Guardian|null $guardian
+ * @property Student|null $student
+ * @property Collection<int, Role> $roles
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -139,7 +153,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasRole(string $name): bool
     {
-        return $this->roles->contains(fn (Role $role): bool => $role->name === $name);
+        return $this->roles->contains(
+            fn (Role $role): bool => $role->name === $name
+        );
     }
 
     /** Invalidate cached permissions after a role or grant change. */

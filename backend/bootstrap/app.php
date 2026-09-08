@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Domain\Shared\Exceptions\CurrencyMismatchException;
 use App\Domain\Shared\Exceptions\DomainException;
 use App\Domain\Shared\Exceptions\PlanLimitExceededException;
@@ -11,12 +13,21 @@ use App\Http\Middleware\ResolveTenant;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\AuthenticateSession;
+use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -34,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(SecurityHeaders::class);
 
         $middleware->api(prepend: [
-            \Illuminate\Http\Middleware\HandleCors::class,
+            HandleCors::class,
         ]);
 
         $middleware->alias([
@@ -45,6 +56,34 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Sanctum tokens are stateless; there is no session to protect.
         $middleware->statefulApi();
+
+        /*
+         * Middleware ordering matters for tenancy, not just for tidiness.
+         *
+         * Route-model binding resolves `{student}` through the model's query,
+         * which carries the tenant global scope — but only if the tenant is
+         * already established. Left at its default position, SubstituteBindings
+         * runs *before* ResolveTenant, the binding resolves unscoped, and a
+         * cross-tenant identifier reaches the policy and comes back 403.
+         *
+         * A 403 confirms the record exists somewhere, which is an enumeration
+         * oracle across tenants. Placing the tenant middleware ahead of
+         * SubstituteBindings makes the binding itself scoped, so another
+         * school's identifier is indistinguishable from one that never existed.
+         */
+        $middleware->priority([
+            HandlePrecognitiveRequests::class,
+            EncryptCookies::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            Authenticate::class,
+            AuthenticateSession::class,
+            ResolveTenant::class,
+            EnsureTenantContext::class,
+            SubstituteBindings::class,
+            EnsurePermission::class,
+            Authorize::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         /*

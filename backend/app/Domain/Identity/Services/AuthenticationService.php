@@ -149,7 +149,12 @@ final class AuthenticationService
         );
     }
 
-    public function logout(User $user, ?string $currentTokenId = null, bool $allDevices = false): void
+    /**
+     * @param  int|string|null  $currentTokenId  personal access tokens use a
+     *                                           bigint key, unlike every other
+     *                                           model in the system
+     */
+    public function logout(User $user, int|string|null $currentTokenId = null, bool $allDevices = false): void
     {
         if ($allDevices) {
             $user->tokens()->delete();

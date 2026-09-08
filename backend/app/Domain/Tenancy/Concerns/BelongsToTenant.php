@@ -57,6 +57,7 @@ trait BelongsToTenant
         return 'school_id';
     }
 
+    /** @return BelongsTo<School, $this> */
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class, $this->getTenantColumn());

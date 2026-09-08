@@ -1,0 +1,21 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - app
+        - database
+        - routes
+        - config
+
+    # Generated at runtime; analysing them adds noise, not signal.
+    excludePaths:
+        - app/Infrastructure/Pdf/*.php
+
+    ignoreErrors:
+        # Eloquent's fluent builder is dynamic by design; larastan resolves most
+        # of it, but scopes added by traits on abstract parents are beyond it.
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder(<.*>)?::(applySort|applySearch|withoutTenantScope|forTenant)\(\)#'
+

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'created' => 'Kreye avèk siksè.',
     'updated' => 'Mete ajou avèk siksè.',

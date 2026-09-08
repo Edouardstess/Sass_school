@@ -20,6 +20,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * a 700-student school on every page view would not survive contact with
  * production.
  */
+/**
+ * @property string $id
+ * @property string $student_id
+ * @property string $status
+ * @property Student|null $student
+ */
 class ReportCard extends BaseModel
 {
     use BelongsToTenant;

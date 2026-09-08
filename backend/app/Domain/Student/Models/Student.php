@@ -8,12 +8,15 @@ use App\Domain\Academic\Models\Grade;
 use App\Domain\Academic\Models\SchoolClass;
 use App\Domain\Attendance\Models\AttendanceRecord;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\Scholarship;
 use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Database\Factories\StudentFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -30,6 +33,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $id
  * @property string $matricule
  * @property string $status
+ */
+/**
+ * @property Collection<int, Guardian> $guardians
+ * @property Collection<int, Enrollment> $enrollments
+ * @property CarbonImmutable|null $birth_date
+ * @property CarbonImmutable|null $enrolled_on
+ * @property CarbonImmutable|null $left_on
  */
 class Student extends BaseModel
 {
@@ -123,7 +133,7 @@ class Student extends BaseModel
 
     public function scholarships(): HasMany
     {
-        return $this->hasMany(\App\Domain\Finance\Models\Scholarship::class);
+        return $this->hasMany(Scholarship::class);
     }
 
     // --------------------------------------------------------------- scopes
@@ -152,9 +162,12 @@ class Student extends BaseModel
     /** The class this student sits in for the given year, if enrolled. */
     public function classForYear(string $academicYearId): ?SchoolClass
     {
-        return $this->enrollments()
+        /** @var Enrollment|null $enrollment */
+        $enrollment = $this->enrollments()
             ->where('academic_year_id', $academicYearId)
-            ->first()?->schoolClass;
+            ->first();
+
+        return $enrollment?->schoolClass;
     }
 
     protected static function newFactory(): StudentFactory
