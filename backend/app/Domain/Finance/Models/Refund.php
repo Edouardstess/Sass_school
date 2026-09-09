@@ -9,8 +9,14 @@ use App\Domain\Shared\Concerns\HasMoneyColumns;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $processed_at
+ * @property CarbonImmutable|null $updated_at
+ */
 class Refund extends BaseModel
 {
     use BelongsToTenant, HasMoneyColumns;
@@ -41,16 +47,19 @@ class Refund extends BaseModel
         return $this->money('amount_minor');
     }
 
+    /** @return BelongsTo<Payment, $this> */
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
     }
 
+    /** @return BelongsTo<Invoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');

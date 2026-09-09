@@ -26,4 +26,11 @@ return [
     'gateway_auth_failed' => "L'authentification auprès de :gateway a échoué.",
     'webhook_invalid_signature' => 'Signature de webhook invalide.',
     'webhook_unknown_transaction' => 'Aucune transaction ne correspond à cette notification.',
+    'invoice_issued' => 'La facture a été émise.',
+    'invoice_cancelled' => 'La facture a été annulée.',
+    'discount_applied' => 'La réduction a été appliquée.',
+    'payment_recorded' => 'Le paiement a été enregistré.',
+    'refund_recorded' => 'Le remboursement a été enregistré.',
+    'checkout_created' => 'Le paiement en ligne a été initié.',
+    'checkout_pending_note' => "Le paiement ne sera confirmé qu'après notification vérifiée du prestataire.",
 ];

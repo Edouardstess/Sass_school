@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property CarbonImmutable $starts_on
  * @property CarbonImmutable $ends_on
  * @property AcademicYear|null $academicYear
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $locked_at
+ * @property CarbonImmutable|null $updated_at
  */
 class GradePeriod extends BaseModel
 {
@@ -46,11 +49,13 @@ class GradePeriod extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
+    /** @return HasMany<Assessment, $this> */
     public function assessments(): HasMany
     {
         return $this->hasMany(Assessment::class);

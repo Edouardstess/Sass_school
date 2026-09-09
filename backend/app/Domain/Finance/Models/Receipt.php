@@ -11,6 +11,7 @@ use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -26,6 +27,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Payment|null $payment
  * @property Invoice|null $invoice
  * @property Student|null $student
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $issued_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Receipt extends BaseModel
 {
@@ -49,21 +53,25 @@ class Receipt extends BaseModel
         return $this->money('amount_minor');
     }
 
+    /** @return BelongsTo<Payment, $this> */
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
     }
 
+    /** @return BelongsTo<Invoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<Document, $this> */
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);

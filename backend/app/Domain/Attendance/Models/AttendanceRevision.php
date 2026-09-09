@@ -7,9 +7,12 @@ namespace App\Domain\Attendance\Models;
 use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** Append-only trail of attendance corrections. */
+/** Append-only trail of attendance corrections.
+ * @property CarbonImmutable|null $created_at
+ */
 class AttendanceRevision extends BaseModel
 {
     use BelongsToTenant;
@@ -26,6 +29,7 @@ class AttendanceRevision extends BaseModel
         return ['created_at' => 'immutable_datetime'];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'changed_by');

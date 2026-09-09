@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Subscription\Models;
 
 use App\Domain\Shared\Models\BaseModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -12,6 +13,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  *   type=limit   → `limit_value` is the ceiling (null means unlimited)
  *   type=boolean → `enabled` says whether the capability is included
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class PlanFeature extends BaseModel
 {
@@ -32,6 +37,7 @@ class PlanFeature extends BaseModel
         return ['limit_value' => 'integer', 'enabled' => 'boolean'];
     }
 
+    /** @return BelongsTo<Plan, $this> */
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);

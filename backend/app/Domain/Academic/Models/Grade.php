@@ -8,6 +8,7 @@ use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $is_absent
  * @property Assessment|null $assessment
  * @property Student|null $student
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Grade extends BaseModel
 {
@@ -47,21 +50,25 @@ class Grade extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Assessment, $this> */
     public function assessment(): BelongsTo
     {
         return $this->belongsTo(Assessment::class);
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function recorder(): BelongsTo
     {
         return $this->belongsTo(User::class, 'recorded_by');
     }
 
+    /** @return HasMany<GradeRevision, $this> */
     public function revisions(): HasMany
     {
         return $this->hasMany(GradeRevision::class)->latest('created_at');

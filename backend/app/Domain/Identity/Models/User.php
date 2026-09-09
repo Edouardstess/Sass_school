@@ -48,6 +48,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Guardian|null $guardian
  * @property Student|null $student
  * @property Collection<int, Role> $roles
+ * @property CarbonImmutable|null $password_changed_at
+ * @property CarbonImmutable|null $two_factor_confirmed_at
+ * @property CarbonImmutable|null $updated_at
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -112,12 +115,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     // -------------------------------------------------------- authorization
 
+    /** @return BelongsToMany<Role, $this> */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_role')
             ->withPivot(['assigned_at', 'assigned_by']);
     }
 
+    /** @return BelongsToMany<Permission, $this> */
     public function directPermissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'user_permission')
@@ -167,6 +172,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     // ------------------------------------------------------------ relations
 
+    /** @return BelongsTo<School, $this> */
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
@@ -178,11 +184,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Teacher::class);
     }
 
+    /** @return HasOne<Guardian, $this> */
     public function guardian(): HasOne
     {
         return $this->hasOne(Guardian::class);
     }
 
+    /** @return HasOne<Student, $this> */
     public function student(): HasOne
     {
         return $this->hasOne(Student::class);

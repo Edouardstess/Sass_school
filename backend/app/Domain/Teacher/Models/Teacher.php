@@ -11,7 +11,9 @@ use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,7 +22,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property string $id
  * @property string|null $user_id
+ * @property Collection<int, ClassSubject> $classSubjects
  * @property string $status
+ * @property CarbonImmutable|null $birth_date
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $hired_on
+ * @property CarbonImmutable|null $updated_at
  */
 class Teacher extends BaseModel
 {
@@ -51,6 +58,7 @@ class Teacher extends BaseModel
         return trim($this->first_name.' '.$this->last_name);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -62,11 +70,13 @@ class Teacher extends BaseModel
         return $this->hasMany(ClassSubject::class);
     }
 
+    /** @return HasMany<SchoolClass, $this> */
     public function homeroomClasses(): HasMany
     {
         return $this->hasMany(SchoolClass::class, 'homeroom_teacher_id');
     }
 
+    /** @return HasMany<TimetableEntry, $this> */
     public function timetableEntries(): HasMany
     {
         return $this->hasMany(TimetableEntry::class);

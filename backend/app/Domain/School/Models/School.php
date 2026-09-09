@@ -28,6 +28,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 /**
  * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $suspended_at
+ * @property CarbonImmutable|null $updated_at
  */
 class School extends BaseModel
 {
@@ -73,26 +76,31 @@ class School extends BaseModel
 
     // ------------------------------------------------------------ relations
 
+    /** @return HasMany<User, $this> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
+    /** @return HasMany<Student, $this> */
     public function students(): HasMany
     {
         return $this->hasMany(Student::class);
     }
 
+    /** @return HasMany<AcademicYear, $this> */
     public function academicYears(): HasMany
     {
         return $this->hasMany(AcademicYear::class);
     }
 
+    /** @return HasMany<SchoolSetting, $this> */
     public function settings(): HasMany
     {
         return $this->hasMany(SchoolSetting::class);
     }
 
+    /** @return HasMany<Subscription, $this> */
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class);
@@ -108,6 +116,7 @@ class School extends BaseModel
             ->whereIn('status', ['trialing', 'active', 'past_due']);
     }
 
+    /** @return HasOne<AcademicYear, $this> */
     public function activeAcademicYear(): HasOne
     {
         return $this->hasOne(AcademicYear::class)->where('status', 'active');

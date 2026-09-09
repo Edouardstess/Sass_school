@@ -7,9 +7,15 @@ namespace App\Domain\Document\Models;
 use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** A queued export, downloadable once the worker has produced the file. */
+/** A queued export, downloadable once the worker has produced the file.
+ * @property CarbonImmutable|null $completed_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $updated_at
+ */
 class ExportJob extends BaseModel
 {
     use BelongsToTenant;
@@ -36,11 +42,13 @@ class ExportJob extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Document, $this> */
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

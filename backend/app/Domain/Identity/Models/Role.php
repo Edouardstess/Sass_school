@@ -6,6 +6,7 @@ namespace App\Domain\Identity\Models;
 
 use App\Domain\School\Models\School;
 use App\Domain\Shared\Models\BaseModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,6 +16,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * A role with a null `school_id` is a system template shared by every tenant;
  * a role with a school_id is one that school defined for itself.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Role extends BaseModel
 {
@@ -44,16 +49,19 @@ class Role extends BaseModel
         ];
     }
 
+    /** @return BelongsToMany<Permission, $this> */
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'role_permission');
     }
 
+    /** @return BelongsToMany<User, $this> */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_role');
     }
 
+    /** @return BelongsTo<School, $this> */
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);

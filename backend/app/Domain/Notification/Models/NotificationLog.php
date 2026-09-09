@@ -7,9 +7,15 @@ namespace App\Domain\Notification\Models;
 use App\Domain\Shared\Enums\NotificationChannel;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** One delivery attempt on one channel. Retained for support and billing. */
+/** One delivery attempt on one channel. Retained for support and billing.
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $delivered_at
+ * @property CarbonImmutable|null $sent_at
+ * @property CarbonImmutable|null $updated_at
+ */
 class NotificationLog extends BaseModel
 {
     use BelongsToTenant;
@@ -39,6 +45,7 @@ class NotificationLog extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Notification, $this> */
     public function notification(): BelongsTo
     {
         return $this->belongsTo(Notification::class);

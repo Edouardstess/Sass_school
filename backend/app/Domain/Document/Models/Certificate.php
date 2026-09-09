@@ -6,6 +6,7 @@ namespace App\Domain\Document\Models;
 
 use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\AcademicYear;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
@@ -20,14 +21,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * only an attestation — never the student's full record.
  */
 /**
+ * @property array<string, mixed>|null $payload
  * @property Student|null $student
  * @property CarbonImmutable|null $issued_at
  * @property CarbonImmutable|null $expires_at
  * @property CarbonImmutable|null $revoked_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Certificate extends BaseModel
 {
-    use BelongsToTenant;
+    use BelongsToTenant, Filterable;
 
     public const TYPE_ENROLLMENT = 'enrollment';
 
@@ -52,21 +56,25 @@ class Certificate extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
+    /** @return BelongsTo<Document, $this> */
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function issuer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'issued_by');

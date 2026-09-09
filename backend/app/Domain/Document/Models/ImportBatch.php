@@ -7,6 +7,7 @@ namespace App\Domain\Document\Models;
 use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -15,6 +16,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * The two-step shape (validate, then confirm) is why this is a row and not a
  * single request: nothing is written until a human has seen the preview and
  * the error report.
+
+ *
+ * @property CarbonImmutable|null $completed_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $validated_at
  */
 class ImportBatch extends BaseModel
 {
@@ -54,6 +61,7 @@ class ImportBatch extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

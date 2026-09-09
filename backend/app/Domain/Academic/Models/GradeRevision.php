@@ -7,9 +7,12 @@ namespace App\Domain\Academic\Models;
 use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** Append-only record of a mark change: who, when, from what, to what, why. */
+/** Append-only record of a mark change: who, when, from what, to what, why.
+ * @property CarbonImmutable|null $created_at
+ */
 class GradeRevision extends BaseModel
 {
     use BelongsToTenant;
@@ -29,11 +32,13 @@ class GradeRevision extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Grade, $this> */
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'changed_by');

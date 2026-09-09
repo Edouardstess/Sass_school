@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Finance\Models;
 
 use App\Domain\Shared\Models\BaseModel;
+use Carbon\CarbonImmutable;
 
 /**
  * A raw inbound provider webhook.
@@ -12,6 +13,11 @@ use App\Domain\Shared\Models\BaseModel;
  * Not tenant-scoped: a webhook arrives before we know which school it concerns.
  * The unique key on (provider, external_event_id) is what makes replays and
  * provider retries idempotent.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $processed_at
+ * @property CarbonImmutable|null $updated_at
  */
 class WebhookEvent extends BaseModel
 {

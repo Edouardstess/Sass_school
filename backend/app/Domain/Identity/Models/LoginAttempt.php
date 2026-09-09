@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Domain\Identity\Models;
 
 use App\Domain\Shared\Models\BaseModel;
+use Carbon\CarbonImmutable;
 
 /**
  * Every authentication attempt, successful or not.
  *
  * Feeds two things: the brute-force lockout (counting recent failures for an
  * e-mail/IP pair) and the security view of the audit trail.
+
+ *
+ * @property CarbonImmutable|null $created_at
  */
 class LoginAttempt extends BaseModel
 {

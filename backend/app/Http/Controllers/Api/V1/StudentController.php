@@ -37,7 +37,7 @@ class StudentController extends Controller
         $user = $this->user($request);
 
         $query = Student::query()
-            ->with(['guardians:id,first_name,last_name,phone,email'])
+            ->with('guardians')
             ->applySearch($request->query('search'), ['first_name', 'last_name', 'matricule', 'email'])
             ->when($request->filled('status'), fn (Builder $q) => $q->where('status', $request->query('status')))
             ->when($request->filled('class_id'), fn (Builder $q) => $q->inClass((string) $request->query('class_id')))

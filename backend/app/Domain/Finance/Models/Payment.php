@@ -41,6 +41,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $paid_at
  * @property Invoice|null $invoice
  * @property Student|null $student
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Payment extends BaseModel
 {
@@ -67,31 +69,37 @@ class Payment extends BaseModel
         return $this->money('amount_minor');
     }
 
+    /** @return BelongsTo<Invoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function recorder(): BelongsTo
     {
         return $this->belongsTo(User::class, 'recorded_by');
     }
 
+    /** @return HasOne<Receipt, $this> */
     public function receipt(): HasOne
     {
         return $this->hasOne(Receipt::class);
     }
 
+    /** @return HasMany<PaymentTransaction, $this> */
     public function transactions(): HasMany
     {
         return $this->hasMany(PaymentTransaction::class);
     }
 
+    /** @return HasMany<Refund, $this> */
     public function refunds(): HasMany
     {
         return $this->hasMany(Refund::class);

@@ -6,7 +6,9 @@ namespace App\Providers;
 
 use App\Domain\Academic\Models\Assessment;
 use App\Domain\Academic\Models\Grade;
+use App\Domain\Academic\Models\Level;
 use App\Domain\Academic\Models\ReportCard;
+use App\Domain\Academic\Models\Room;
 use App\Domain\Academic\Models\SchoolClass;
 use App\Domain\Academic\Models\Subject;
 use App\Domain\Attendance\Models\AttendanceRecord;
@@ -16,11 +18,13 @@ use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\Payment;
 use App\Domain\Identity\Models\User;
+use App\Domain\School\Models\AcademicYear;
 use App\Domain\School\Models\School;
 use App\Domain\Student\Models\AdmissionApplication;
 use App\Domain\Student\Models\Guardian;
 use App\Domain\Student\Models\Student;
 use App\Domain\Teacher\Models\Teacher;
+use App\Policies\AcademicYearPolicy;
 use App\Policies\AdmissionApplicationPolicy;
 use App\Policies\AssessmentPolicy;
 use App\Policies\AttendanceRecordPolicy;
@@ -30,8 +34,10 @@ use App\Policies\FeeTypePolicy;
 use App\Policies\GradePolicy;
 use App\Policies\GuardianPolicy;
 use App\Policies\InvoicePolicy;
+use App\Policies\LevelPolicy;
 use App\Policies\PaymentPolicy;
 use App\Policies\ReportCardPolicy;
+use App\Policies\RoomPolicy;
 use App\Policies\SchoolClassPolicy;
 use App\Policies\SchoolPolicy;
 use App\Policies\StudentPolicy;
@@ -46,12 +52,15 @@ class AuthServiceProvider extends ServiceProvider
     /** @var array<class-string, class-string> */
     private array $policies = [
         School::class => SchoolPolicy::class,
+        AcademicYear::class => AcademicYearPolicy::class,
         User::class => UserPolicy::class,
         Student::class => StudentPolicy::class,
         Guardian::class => GuardianPolicy::class,
         Teacher::class => TeacherPolicy::class,
         SchoolClass::class => SchoolClassPolicy::class,
         Subject::class => SubjectPolicy::class,
+        Level::class => LevelPolicy::class,
+        Room::class => RoomPolicy::class,
         Assessment::class => AssessmentPolicy::class,
         Grade::class => GradePolicy::class,
         ReportCard::class => ReportCardPolicy::class,

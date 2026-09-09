@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Shared\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * `$guarded = []` is deliberately NOT used anywhere; every model declares an
  * explicit `$fillable`, because mass assignment is one of the OWASP items this
  * system is built to resist.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 abstract class BaseModel extends Model
 {

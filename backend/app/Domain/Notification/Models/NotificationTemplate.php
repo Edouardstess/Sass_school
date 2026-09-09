@@ -7,6 +7,7 @@ namespace App\Domain\Notification\Models;
 use App\Domain\School\Models\School;
 use App\Domain\Shared\Enums\NotificationChannel;
 use App\Domain\Shared\Models\BaseModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -15,6 +16,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * Not tenant-scoped by the global scope: a lookup must be able to fall back
  * from the school's own override to the platform default in one query.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class NotificationTemplate extends BaseModel
 {
@@ -32,6 +37,7 @@ class NotificationTemplate extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<School, $this> */
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);

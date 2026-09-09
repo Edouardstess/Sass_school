@@ -7,6 +7,7 @@ namespace App\Domain\Finance\Models;
 use App\Domain\Shared\Concerns\HasMoneyColumns;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -15,6 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Kept apart from `payments` so the accounting record is never polluted by
  * abandoned checkouts, and so the finance domain never needs to know that a
  * gateway exists.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $updated_at
  */
 class PaymentTransaction extends BaseModel
 {
@@ -47,11 +53,13 @@ class PaymentTransaction extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Invoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
+    /** @return BelongsTo<Payment, $this> */
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);

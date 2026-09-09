@@ -11,6 +11,7 @@ use App\Domain\Student\Models\Enrollment;
 use App\Domain\Student\Models\Student;
 use App\Domain\Teacher\Models\Teacher;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,6 +35,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Level|null $level
  * @property Room|null $room
  * @property Teacher|null $homeroomTeacher
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class SchoolClass extends BaseModel
 {
@@ -51,31 +54,37 @@ class SchoolClass extends BaseModel
         return ['capacity' => 'integer', 'is_active' => 'boolean'];
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
+    /** @return BelongsTo<Level, $this> */
     public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class);
     }
 
+    /** @return BelongsTo<Room, $this> */
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
     }
 
+    /** @return BelongsTo<Teacher, $this> */
     public function homeroomTeacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class, 'homeroom_teacher_id');
     }
 
+    /** @return HasMany<ClassSubject, $this> */
     public function classSubjects(): HasMany
     {
         return $this->hasMany(ClassSubject::class);
     }
 
+    /** @return HasMany<Enrollment, $this> */
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
@@ -94,6 +103,7 @@ class SchoolClass extends BaseModel
         )->where('enrollments.status', 'active');
     }
 
+    /** @return HasMany<TimetableEntry, $this> */
     public function timetableEntries(): HasMany
     {
         return $this->hasMany(TimetableEntry::class);

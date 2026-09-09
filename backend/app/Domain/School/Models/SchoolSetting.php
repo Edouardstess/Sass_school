@@ -6,6 +6,7 @@ namespace App\Domain\School\Models;
 
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 
 /**
  * A single typed configuration value, namespaced by `group`.
@@ -20,6 +21,8 @@ use App\Domain\Tenancy\Concerns\BelongsToTenant;
  * @property string $key
  * @property array<string, mixed>|scalar|null $value
  * @property string $type
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class SchoolSetting extends BaseModel
 {

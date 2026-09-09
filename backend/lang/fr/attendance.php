@@ -9,4 +9,5 @@ return [
     'justification_pending' => 'Une justification est déjà en attente de validation.',
     'justification_already_reviewed' => 'Cette justification a déjà été traitée.',
     'recorded' => 'Les présences ont été enregistrées.',
+    'justification_submitted' => 'La justification a été soumise pour validation.',
 ];

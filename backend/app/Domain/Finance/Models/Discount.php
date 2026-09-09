@@ -7,12 +7,17 @@ namespace App\Domain\Finance\Models;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 
 /**
  * A reusable rebate.
  *
  * Percentages are stored in basis points (2500 = 25.00 %) so no float is ever
  * involved in computing what a family owes.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Discount extends BaseModel
 {

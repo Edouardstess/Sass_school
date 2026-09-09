@@ -9,9 +9,11 @@ use App\Domain\Academic\Models\SchoolClass;
 use App\Domain\Document\Models\Document;
 use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\AcademicYear;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Enums\ApplicationStatus;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,10 +31,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $reference
  * @property ApplicationStatus $status
  * @property string|null $student_id
+ * @property CarbonImmutable|null $birth_date
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $reviewed_at
+ * @property CarbonImmutable|null $submitted_at
+ * @property CarbonImmutable|null $updated_at
  */
 class AdmissionApplication extends BaseModel
 {
-    use BelongsToTenant, HasFactory, SoftDeletes;
+    use BelongsToTenant, Filterable, HasFactory, SoftDeletes;
 
     protected $table = 'admission_applications';
 
@@ -59,31 +66,37 @@ class AdmissionApplication extends BaseModel
         return trim($this->first_name.' '.$this->last_name);
     }
 
+    /** @return BelongsTo<Level, $this> */
     public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class);
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<SchoolClass, $this> */
     public function assignedClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'assigned_class_id');
     }
 
+    /** @return BelongsTo<User, $this> */
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewed_by');
     }
 
+    /** @return HasMany<AdmissionComment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(AdmissionComment::class, 'application_id')->latest();

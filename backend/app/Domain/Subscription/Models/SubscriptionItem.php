@@ -7,9 +7,13 @@ namespace App\Domain\Subscription\Models;
 use App\Domain\Shared\Concerns\HasMoneyColumns;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** A priced line inside a subscription (base fee, add-on bundles). */
+/** A priced line inside a subscription (base fee, add-on bundles).
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ */
 class SubscriptionItem extends BaseModel
 {
     use HasMoneyColumns;
@@ -23,6 +27,7 @@ class SubscriptionItem extends BaseModel
         return ['quantity' => 'integer', 'unit_price_minor' => 'integer'];
     }
 
+    /** @return BelongsTo<Subscription, $this> */
     public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class);

@@ -6,9 +6,11 @@ namespace App\Domain\Academic\Models;
 
 use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\AcademicYear;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Enums\AssessmentType;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,10 +31,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property numeric-string $weight
  * @property GradePeriod|null $gradePeriod
  * @property ClassSubject|null $classSubject
+ * @property CarbonImmutable|null $assessed_on
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $locked_at
+ * @property CarbonImmutable|null $published_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Assessment extends BaseModel
 {
-    use BelongsToTenant, HasFactory, SoftDeletes;
+    use BelongsToTenant, Filterable, HasFactory, SoftDeletes;
 
     public const STATUS_DRAFT = 'draft';
 
@@ -58,26 +65,31 @@ class Assessment extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<GradePeriod, $this> */
     public function gradePeriod(): BelongsTo
     {
         return $this->belongsTo(GradePeriod::class);
     }
 
+    /** @return BelongsTo<ClassSubject, $this> */
     public function classSubject(): BelongsTo
     {
         return $this->belongsTo(ClassSubject::class);
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    /** @return HasMany<Grade, $this> */
     public function grades(): HasMany
     {
         return $this->hasMany(Grade::class);

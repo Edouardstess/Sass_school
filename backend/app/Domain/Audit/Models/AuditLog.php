@@ -8,6 +8,7 @@ use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\School;
 use App\Domain\Shared\Enums\AuditAction;
 use App\Domain\Shared\Models\BaseModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -18,6 +19,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * audit view spans tenants; the tenant-facing controller filters explicitly.
  * The table itself rejects UPDATE and DELETE via PostgreSQL rules, so this
  * model has no update path by construction.
+
+ *
+ * @property CarbonImmutable|null $created_at
  */
 class AuditLog extends BaseModel
 {
@@ -41,11 +45,13 @@ class AuditLog extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<School, $this> */
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);

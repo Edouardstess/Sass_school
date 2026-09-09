@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\SchoolClass;
 use App\Domain\Academic\Models\TimetableEntry;
 use App\Domain\Identity\Models\User;
 use App\Domain\School\Models\School;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Enums\AttendanceStatus;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
@@ -34,10 +35,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property School|null $school
  * @property SchoolClass|null $schoolClass
  * @property CarbonImmutable|null $parent_notified_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class AttendanceRecord extends BaseModel
 {
-    use BelongsToTenant, HasFactory;
+    use BelongsToTenant, Filterable, HasFactory;
 
     protected $fillable = [
         'school_id', 'student_id', 'school_class_id', 'academic_year_id',
@@ -56,31 +59,37 @@ class AttendanceRecord extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<SchoolClass, $this> */
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
 
+    /** @return BelongsTo<TimetableEntry, $this> */
     public function timetableEntry(): BelongsTo
     {
         return $this->belongsTo(TimetableEntry::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function recorder(): BelongsTo
     {
         return $this->belongsTo(User::class, 'recorded_by');
     }
 
+    /** @return HasMany<AttendanceJustification, $this> */
     public function justifications(): HasMany
     {
         return $this->hasMany(AttendanceJustification::class);
     }
 
+    /** @return HasMany<AttendanceRevision, $this> */
     public function revisions(): HasMany
     {
         return $this->hasMany(AttendanceRevision::class)->latest('created_at');

@@ -6,6 +6,7 @@ namespace App\Domain\Academic\Models;
 
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -14,6 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Subject name, coefficient and teacher name are copied in rather than joined
  * at render time: a card issued in December must keep saying what it said in
  * December, even if the subject is renamed in March.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class ReportCardLine extends BaseModel
 {
@@ -37,11 +42,13 @@ class ReportCardLine extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<ReportCard, $this> */
     public function reportCard(): BelongsTo
     {
         return $this->belongsTo(ReportCard::class);
     }
 
+    /** @return BelongsTo<Subject, $this> */
     public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);

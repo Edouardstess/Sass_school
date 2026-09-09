@@ -227,6 +227,7 @@ final class AttendanceService
             ->whereBetween('attendance_date', [$from->toDateString(), $to->toDateString()])
             ->selectRaw('status, count(*) as total, count(*) filter (where is_justified) as justified')
             ->groupBy('status')
+            ->toBase()
             ->get()
             ->keyBy('status');
 

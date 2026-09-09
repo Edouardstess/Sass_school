@@ -6,12 +6,17 @@ namespace App\Domain\Finance\Models;
 
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 
 /**
  * Per-tenant counter behind invoice, receipt and matricule numbering.
  *
  * Read and incremented under `lockForUpdate` inside a transaction, so two
  * simultaneous requests cannot mint the same invoice number.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class NumberSequence extends BaseModel
 {

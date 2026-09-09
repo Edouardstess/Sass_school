@@ -40,6 +40,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $birth_date
  * @property CarbonImmutable|null $enrolled_on
  * @property CarbonImmutable|null $left_on
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Student extends BaseModel
 {
@@ -73,6 +75,12 @@ class Student extends BaseModel
         ];
     }
 
+    /**
+     * Note for callers writing a column-restricted eager load: this reads
+     * `middle_name` as well as the first and last name. Omitting it from a
+     * select produces an incomplete name, which strict attribute access
+     * surfaces as an error rather than quietly dropping it.
+     */
     public function getFullNameAttribute(): string
     {
         return trim(implode(' ', array_filter([$this->first_name, $this->middle_name, $this->last_name])));
@@ -85,11 +93,13 @@ class Student extends BaseModel
 
     // ------------------------------------------------------------ relations
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsToMany<Guardian, $this> */
     public function guardians(): BelongsToMany
     {
         return $this->belongsToMany(Guardian::class, 'student_guardian')
@@ -105,6 +115,7 @@ class Student extends BaseModel
             ?? $this->guardians->first();
     }
 
+    /** @return HasMany<Enrollment, $this> */
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
@@ -116,21 +127,25 @@ class Student extends BaseModel
         return $this->enrollments()->where('status', 'active');
     }
 
+    /** @return HasMany<Grade, $this> */
     public function grades(): HasMany
     {
         return $this->hasMany(Grade::class);
     }
 
+    /** @return HasMany<AttendanceRecord, $this> */
     public function attendanceRecords(): HasMany
     {
         return $this->hasMany(AttendanceRecord::class);
     }
 
+    /** @return HasMany<Invoice, $this> */
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
     }
 
+    /** @return HasMany<Scholarship, $this> */
     public function scholarships(): HasMany
     {
         return $this->hasMany(Scholarship::class);

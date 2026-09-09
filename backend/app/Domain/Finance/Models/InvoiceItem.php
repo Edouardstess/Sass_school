@@ -8,6 +8,7 @@ use App\Domain\Shared\Concerns\HasMoneyColumns;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Shared\ValueObjects\Money;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -16,6 +17,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * `description` is denormalised from the fee type on purpose: renaming
  * "Scolarité" to "Frais de scolarité" must not silently rewrite invoices that
  * were already sent to parents.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class InvoiceItem extends BaseModel
 {
@@ -36,11 +41,13 @@ class InvoiceItem extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Invoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
+    /** @return BelongsTo<FeeType, $this> */
     public function feeType(): BelongsTo
     {
         return $this->belongsTo(FeeType::class);

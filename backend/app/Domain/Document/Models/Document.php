@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Document\Models;
 
 use App\Domain\Identity\Models\User;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -20,10 +22,15 @@ use RuntimeException;
  * `path` is an object key inside a *private* bucket, never a public URL.
  * Access always goes through `temporaryUrl()` after a policy check, and every
  * mint is written to the audit log.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Document extends BaseModel
 {
-    use BelongsToTenant, SoftDeletes;
+    use BelongsToTenant, Filterable, SoftDeletes;
 
     public const COLLECTION_STUDENT_PHOTO = 'student_photo';
 
@@ -60,6 +67,7 @@ class Document extends BaseModel
         return $this->morphTo();
     }
 
+    /** @return BelongsTo<User, $this> */
     public function uploader(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');

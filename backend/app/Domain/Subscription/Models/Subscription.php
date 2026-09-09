@@ -30,6 +30,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property CarbonImmutable|null $trial_ends_at
  * @property CarbonImmutable|null $current_period_end
  * @property Plan|null $plan
+ * @property CarbonImmutable|null $cancelled_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $current_period_start
+ * @property CarbonImmutable|null $ends_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Subscription extends BaseModel
 {
@@ -52,21 +57,25 @@ class Subscription extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<School, $this> */
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
     }
 
+    /** @return BelongsTo<Plan, $this> */
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
     }
 
+    /** @return HasMany<SubscriptionItem, $this> */
     public function items(): HasMany
     {
         return $this->hasMany(SubscriptionItem::class);
     }
 
+    /** @return HasMany<UsageRecord, $this> */
     public function usageRecords(): HasMany
     {
         return $this->hasMany(UsageRecord::class);

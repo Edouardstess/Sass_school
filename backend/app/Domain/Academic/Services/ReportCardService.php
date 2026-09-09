@@ -243,6 +243,7 @@ final class ReportCardService
             ->whereBetween('attendance_date', [$period->starts_on->toDateString(), $period->ends_on->toDateString()])
             ->selectRaw('status, count(*) as total')
             ->groupBy('status')
+            ->toBase()
             ->pluck('total', 'status');
 
         return [

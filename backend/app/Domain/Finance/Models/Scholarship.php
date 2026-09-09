@@ -14,7 +14,12 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** A per-student award applied automatically when invoices are generated. */
+/** A per-student award applied automatically when invoices are generated.
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $ends_on
+ * @property CarbonImmutable|null $starts_on
+ * @property CarbonImmutable|null $updated_at
+ */
 class Scholarship extends BaseModel
 {
     use BelongsToTenant;
@@ -39,16 +44,19 @@ class Scholarship extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function grantor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'granted_by');

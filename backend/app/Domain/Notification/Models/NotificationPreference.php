@@ -8,9 +8,13 @@ use App\Domain\Identity\Models\User;
 use App\Domain\Shared\Enums\NotificationChannel;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** Per-user, per-event opt-in for each channel. */
+/** Per-user, per-event opt-in for each channel.
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ */
 class NotificationPreference extends BaseModel
 {
     use BelongsToTenant;
@@ -27,6 +31,7 @@ class NotificationPreference extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

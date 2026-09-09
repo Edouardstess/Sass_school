@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Notification\Models;
 
 use App\Domain\Identity\Models\User;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,10 +19,15 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  *
  * `dedupe_key` is the natural key that makes fan-out jobs re-runnable: the
  * J-3 reminder sweep can run twice without a parent receiving two messages.
+
+ *
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $read_at
+ * @property CarbonImmutable|null $updated_at
  */
 class Notification extends BaseModel
 {
-    use BelongsToTenant;
+    use BelongsToTenant, Filterable;
 
     protected $fillable = [
         'school_id', 'user_id', 'template_id', 'key', 'title', 'body',
@@ -35,6 +42,7 @@ class Notification extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -45,6 +53,7 @@ class Notification extends BaseModel
         return $this->morphTo();
     }
 
+    /** @return HasMany<NotificationLog, $this> */
     public function logs(): HasMany
     {
         return $this->hasMany(NotificationLog::class);

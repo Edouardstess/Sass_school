@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable $ends_on
  * @property numeric-string $grading_scale_max
  * @property numeric-string $passing_grade
+ * @property CarbonImmutable|null $closed_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  */
 class AcademicYear extends BaseModel
 {
@@ -71,16 +74,19 @@ class AcademicYear extends BaseModel
         return $query->where('status', self::STATUS_ACTIVE);
     }
 
+    /** @return HasMany<GradePeriod, $this> */
     public function gradePeriods(): HasMany
     {
         return $this->hasMany(GradePeriod::class)->orderBy('sequence');
     }
 
+    /** @return HasMany<SchoolClass, $this> */
     public function classes(): HasMany
     {
         return $this->hasMany(SchoolClass::class);
     }
 
+    /** @return HasMany<Enrollment, $this> */
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);

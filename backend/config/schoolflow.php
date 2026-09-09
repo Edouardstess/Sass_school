@@ -102,6 +102,11 @@ return [
         ],
         'documents' => [
             'documents.view', 'documents.upload', 'documents.delete',
+        ],
+        // A separate group because role templates expand wildcards on the
+        // permission's own prefix: `documents.*` would never have reached a
+        // `certificates.` permission filed under `documents`.
+        'certificates' => [
             'certificates.view', 'certificates.issue', 'certificates.revoke',
         ],
         'reports' => [
@@ -136,7 +141,8 @@ return [
                 'school.*', 'users.*', 'academic_years.*', 'students.*', 'guardians.*',
                 'teachers.*', 'admissions.*', 'classes.*', 'subjects.*', 'timetable.*',
                 'grades.*', 'report_cards.*', 'attendance.*', 'finance.*',
-                'notifications.*', 'documents.*', 'reports.*', 'audit.view', 'assistant.use',
+                'notifications.*', 'documents.*', 'certificates.*', 'reports.*',
+                'audit.view', 'assistant.use',
             ],
         ],
         'school_admin' => [
@@ -148,7 +154,8 @@ return [
                 'grades.view', 'report_cards.view', 'report_cards.generate',
                 'attendance.view', 'attendance.record', 'attendance.update',
                 'attendance.approve_justification',
-                'invoices.view', 'documents.*', 'notifications.view', 'notifications.send',
+                'invoices.view', 'documents.*', 'certificates.view', 'certificates.issue',
+                'notifications.view', 'notifications.send',
                 'reports.view', 'reports.academic', 'reports.attendance', 'reports.export',
                 'assistant.use',
             ],

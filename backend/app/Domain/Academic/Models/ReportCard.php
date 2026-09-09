@@ -6,9 +6,11 @@ namespace App\Domain\Academic\Models;
 
 use App\Domain\Document\Models\Document;
 use App\Domain\Identity\Models\User;
+use App\Domain\Shared\Concerns\Filterable;
 use App\Domain\Shared\Models\BaseModel;
 use App\Domain\Student\Models\Student;
 use App\Domain\Tenancy\Concerns\BelongsToTenant;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,10 +33,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property GradePeriod|null $gradePeriod
  * @property SchoolClass|null $schoolClass
  * @property Collection<int, ReportCardLine> $lines
+ * @property CarbonImmutable|null $computed_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $published_at
+ * @property CarbonImmutable|null $updated_at
  */
 class ReportCard extends BaseModel
 {
-    use BelongsToTenant;
+    use BelongsToTenant, Filterable;
 
     public const STATUS_DRAFT = 'draft';
 
@@ -60,31 +66,37 @@ class ReportCard extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<GradePeriod, $this> */
     public function gradePeriod(): BelongsTo
     {
         return $this->belongsTo(GradePeriod::class);
     }
 
+    /** @return BelongsTo<SchoolClass, $this> */
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
 
+    /** @return HasMany<ReportCardLine, $this> */
     public function lines(): HasMany
     {
         return $this->hasMany(ReportCardLine::class);
     }
 
+    /** @return BelongsTo<Document, $this> */
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'published_by');

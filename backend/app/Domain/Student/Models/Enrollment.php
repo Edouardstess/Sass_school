@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonImmutable|null $enrolled_on
  * @property SchoolClass|null $schoolClass
  * @property AcademicYear|null $academicYear
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $ended_on
+ * @property CarbonImmutable|null $updated_at
  */
 class Enrollment extends BaseModel
 {
@@ -49,16 +52,19 @@ class Enrollment extends BaseModel
         ];
     }
 
+    /** @return BelongsTo<Student, $this> */
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 
+    /** @return BelongsTo<SchoolClass, $this> */
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
 
+    /** @return BelongsTo<AcademicYear, $this> */
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);

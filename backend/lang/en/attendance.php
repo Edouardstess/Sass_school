@@ -9,4 +9,5 @@ return [
     'justification_pending' => 'A justification is already awaiting review.',
     'justification_already_reviewed' => 'This justification has already been reviewed.',
     'recorded' => 'Attendance has been recorded.',
+    'justification_submitted' => 'The justification was submitted for review.',
 ];
