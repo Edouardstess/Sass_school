@@ -1,0 +1,61 @@
+name: STED backend
+
+on:
+  push:
+    branches: [main]
+    paths: ['sted-restaurant-os/**']
+  pull_request:
+    paths: ['sted-restaurant-os/**']
+
+defaults:
+  run:
+    working-directory: sted-restaurant-os
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Unit tests
+        run: >-
+          dotnet test tests/STED.RestaurantOS.UnitTests
+          --no-build -c Release
+          --logger "trx;LogFileName=unit.trx"
+          --collect:"XPlat Code Coverage"
+
+      # Integration tests spin up a real SQL Server through Testcontainers.
+      # An in-memory provider would not exercise the filtered unique indexes,
+      # and those indexes are the concurrency guarantees.
+      - name: Integration tests
+        run: >-
+          dotnet test tests/STED.RestaurantOS.IntegrationTests
+          --no-build -c Release
+          --logger "trx;LogFileName=integration.trx"
+        if: hashFiles('sted-restaurant-os/tests/STED.RestaurantOS.IntegrationTests/*.csproj') != ''
+
+      - name: Format check
+        run: dotnet format --verify-no-changes --no-restore
+        continue-on-error: true
+
+      - name: Vulnerable packages
+        run: |
+          dotnet list package --vulnerable --include-transitive 2>&1 | tee audit.txt
+          ! grep -q "has the following vulnerable packages" audit.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: sted-restaurant-os/**/TestResults/**

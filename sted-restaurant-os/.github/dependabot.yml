@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /sted-restaurant-os
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: npm
+    directory: /sted-restaurant-os/frontend/sted-restaurant-os-web
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: docker
+    directory: /sted-restaurant-os/src/STED.RestaurantOS.API
+    schedule:
+      interval: monthly

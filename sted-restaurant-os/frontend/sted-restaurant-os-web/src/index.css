@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+/*
+  One colour means one status, never decoration. A cook reading a screen from
+  two metres away has to know what amber means without thinking about it.
+*/
+@theme {
+  --color-ink-950: #0b0d12;
+  --color-ink-900: #0f1115;
+  --color-ink-800: #171a21;
+  --color-ink-700: #22262f;
+  --color-ink-600: #333945;
+  --color-ink-400: #6b7280;
+  --color-ink-200: #d4d7dd;
+  --color-ink-100: #eceef2;
+  --color-ink-50: #f7f8fa;
+
+  --color-brand-600: #b4451f;
+  --color-brand-500: #d4552a;
+  --color-brand-400: #e8703f;
+
+  /* Status palette: waiting, working, attention, done, gone wrong. */
+  --color-status-idle: #6b7280;
+  --color-status-active: #3b82f6;
+  --color-status-warning: #f59e0b;
+  --color-status-ready: #10b981;
+  --color-status-late: #ef4444;
+
+  --font-sans: 'Inter var', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-50 text-ink-900 antialiased;
+  font-family: var(--font-sans);
+}
+
+/* Money lines up in a column or it is unreadable at a glance. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/*
+  Kitchen and bar screens run for fourteen hours in a room that is often dark
+  and always busy. Dark ground, large type, no hairlines.
+*/
+.display-surface {
+  @apply bg-ink-950 text-ink-100;
+}
+
+/* Minimum touch targets: 48px for staff on a phone, 64px on a wall display. */
+.tap {
+  @apply min-h-12 min-w-12;
+}
+
+.tap-display {
+  @apply min-h-16 min-w-16;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

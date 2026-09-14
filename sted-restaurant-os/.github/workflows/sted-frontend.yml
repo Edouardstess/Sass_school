@@ -1,0 +1,46 @@
+name: STED frontend
+
+on:
+  push:
+    branches: [main]
+    paths: ['sted-restaurant-os/frontend/**']
+  pull_request:
+    paths: ['sted-restaurant-os/frontend/**']
+
+defaults:
+  run:
+    working-directory: sted-restaurant-os/frontend/sted-restaurant-os-web
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: sted-restaurant-os/frontend/sted-restaurant-os-web/package-lock.json
+
+      - run: npm ci
+
+      # Type errors are build failures here. Money and order status flow
+      # through these types; a silent 'any' is how a wrong total reaches a
+      # guest's screen.
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test -- --run
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit
+        run: npm audit --audit-level=high
+        continue-on-error: true

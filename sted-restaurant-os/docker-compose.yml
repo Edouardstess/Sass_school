@@ -1,0 +1,88 @@
+# Development and small-scale production stack.
+#
+# Every secret comes from .env (see .env.example); nothing sensitive is written
+# here, because this file is committed and that one is not.
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sted-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:?set SQL_PASSWORD in .env}
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      # The API waits for this: starting against a database that is still
+      # booting produces a confusing failure rather than a clear one.
+      test:
+        - CMD-SHELL
+        - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - sted
+
+  api:
+    build:
+      context: .
+      dockerfile: src/STED.RestaurantOS.API/Dockerfile
+    container_name: sted-api
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ConnectionStrings__Default: >-
+        Server=sqlserver,1433;Database=StedRestaurantOs;User Id=sa;
+        Password=${SQL_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true
+      Jwt__SigningKey: ${JWT__SIGNINGKEY:?set JWT__SIGNINGKEY in .env}
+      Jwt__Issuer: ${JWT__ISSUER:-sted-restaurant-os}
+      Jwt__Audience: ${JWT__AUDIENCE:-sted-restaurant-os-api}
+      Cors__AllowedOrigins__0: ${CORS__ALLOWEDORIGINS__0:-http://localhost:5173}
+    ports:
+      - "8080:8080"
+    networks:
+      - sted
+
+  frontend:
+    build:
+      context: ./frontend/sted-restaurant-os-web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+    container_name: sted-web
+    depends_on:
+      - api
+    ports:
+      - "5173:80"
+    networks:
+      - sted
+
+  nginx:
+    image: nginx:alpine
+    container_name: sted-nginx
+    depends_on:
+      - api
+      - frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx-certs:/etc/nginx/certs
+    networks:
+      - sted
+
+volumes:
+  mssql-data:
+  nginx-certs:
+
+networks:
+  sted:
+    driver: bridge
