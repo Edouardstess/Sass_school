@@ -11,9 +11,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\STED.RestaurantOS.Application\STED.RestaurantOS.Application.csproj" />
     <ProjectReference Include="..\STED.RestaurantOS.Domain\STED.RestaurantOS.Domain.csproj" />
     <ProjectReference Include="..\STED.RestaurantOS.Shared\STED.RestaurantOS.Shared.csproj" />
   </ItemGroup>

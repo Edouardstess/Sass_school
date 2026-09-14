@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using STED.RestaurantOS.Domain.Auditing;
 using STED.RestaurantOS.Domain.Billing;
@@ -12,6 +13,7 @@ using STED.RestaurantOS.Domain.Preparation;
 using STED.RestaurantOS.Domain.Restaurants;
 using STED.RestaurantOS.Domain.Staff;
 using STED.RestaurantOS.Infrastructure.Idempotency;
+using STED.RestaurantOS.Infrastructure.Identity;
 
 namespace STED.RestaurantOS.Infrastructure.Persistence;
 
@@ -19,13 +21,22 @@ namespace STED.RestaurantOS.Infrastructure.Persistence;
 /// The single write model. Only aggregate roots get a DbSet: everything else is
 /// reached through its root, which is what keeps the invariants enforceable.
 /// </summary>
-public sealed class AppDbContext : DbContext
+public sealed class AppDbContext
+    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     private readonly ITenantContext _tenant;
 
     public AppDbContext(DbContextOptions<AppDbContext> options, ITenantContext tenant)
         : base(options)
         => _tenant = tenant;
+
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+    public DbSet<Permission> Permissions => Set<Permission>();
+
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+
+    public DbSet<UserPermissionOverride> UserPermissionOverrides => Set<UserPermissionOverride>();
 
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
 
