@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>STED.RestaurantOS.Shared</RootNamespace>
+  </PropertyGroup>
+
+</Project>

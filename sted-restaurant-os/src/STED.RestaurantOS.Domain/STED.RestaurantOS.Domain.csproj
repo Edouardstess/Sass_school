@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>STED.RestaurantOS.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    The Domain project intentionally has NO package references and NO project
+    references other than Shared. Any dependency added here is an architecture
+    violation and is caught by the NetArchTest suite in the unit tests.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\STED.RestaurantOS.Shared\STED.RestaurantOS.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>STED.RestaurantOS.UnitTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Moq" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\STED.RestaurantOS.Domain\STED.RestaurantOS.Domain.csproj" />
+    <ProjectReference Include="..\..\src\STED.RestaurantOS.Shared\STED.RestaurantOS.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
