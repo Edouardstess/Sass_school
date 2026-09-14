@@ -9,6 +9,7 @@ using STED.RestaurantOS.Application.Abstractions;
 using STED.RestaurantOS.Domain.Common;
 using STED.RestaurantOS.Infrastructure;
 using STED.RestaurantOS.Infrastructure.Persistence.Seed;
+using STED.RestaurantOS.Infrastructure.Realtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,10 +38,14 @@ builder.Services.AddHttpContextAccessor();
 
 // The tenant is resolved from the authenticated principal only. Registered
 // before persistence, because the DbContext's query filters depend on it.
-builder.Services.AddScoped<ITenantContext, HttpTenantContext>();
+// Registered concretely as well, because the guest endpoints need the two
+// session claims that only this implementation exposes.
+builder.Services.AddScoped<HttpTenantContext>();
+builder.Services.AddScoped<ITenantContext>(sp => sp.GetRequiredService<HttpTenantContext>());
 
 builder.Services.AddPersistence(connectionString);
 builder.Services.AddIdentityAndAuthentication(builder.Configuration);
+builder.Services.AddApplicationServices();
 builder.Services.AddApiRateLimiting();
 builder.Services.AddApiCors(builder.Configuration);
 builder.Services.AddApiDocumentation();
@@ -96,6 +101,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Group membership is decided server-side in OnConnectedAsync, from the token's
+// claims. There is no client-callable "join this restaurant" method.
+app.MapHub<RestaurantHub>("/hubs/restaurant");
 
 app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {

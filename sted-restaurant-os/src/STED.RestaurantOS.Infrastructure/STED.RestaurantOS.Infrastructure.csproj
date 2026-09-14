@@ -4,6 +4,15 @@
     <RootNamespace>STED.RestaurantOS.Infrastructure</RootNamespace>
   </PropertyGroup>
 
+  <!--
+    The infrastructure hosts the SignalR hub and the authorization handlers, so
+    it needs the ASP.NET Core framework assemblies. This is the one place where
+    a non-web project legitimately references them; the domain never does.
+  -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
