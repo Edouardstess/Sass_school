@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using STED.RestaurantOS.Application.Abstractions;
+using STED.RestaurantOS.Infrastructure.Payments;
 using STED.RestaurantOS.Infrastructure.Realtime;
 using STED.RestaurantOS.Infrastructure.Services;
 
@@ -24,6 +25,13 @@ public static class ServiceRegistration
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IPreparationService, PreparationService>();
         services.AddScoped<IGuestSessionService, GuestSessionService>();
+        services.AddScoped<IBillingService, BillingService>();
+        services.AddScoped<IReportService, ReportService>();
+
+        // Cash is the only method implemented. The others are modelled, not
+        // simulated: adding MonCash means adding an IPaymentProvider here.
+        services.AddSingleton<IPaymentProvider, CashPaymentProvider>();
+        services.AddSingleton<IPaymentProviderResolver, PaymentProviderResolver>();
 
         services.AddScoped<IRealtimeNotifier, SignalRNotifier>();
 
